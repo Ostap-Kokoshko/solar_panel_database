@@ -47,6 +47,20 @@ def get_battery(battery_id: int) -> Response:
     return make_response(jsonify(battery_controller.find_by_id(battery_id)), HTTPStatus.OK)
 
 
+@battery_bp.post('/<int:battery_id>/add_panel')
+def add_battery_to_solar_panel(battery_id) -> Response:
+    try:
+        data = request.get_json()
+        solar_panel_id = data.get('solar_panel_id')
+
+        battery_controller.add_solar_panel_to_battery(battery_id, solar_panel_id)
+
+        return make_response(jsonify({"message": "Panel added successfully"}), HTTPStatus.OK)
+
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 @battery_bp.put('/<int:battery_id>')
 def update_battery(battery_id: int) -> Response:
     """
@@ -57,6 +71,21 @@ def update_battery(battery_id: int) -> Response:
     battery = Battery.create_from_dto(content)
     battery_controller.update(battery_id, battery)
     return make_response("Battery updated", HTTPStatus.OK)
+
+
+@battery_bp.patch('/<int:battery_id>/remove_panel')
+def remove_battery_from_solar_panel(battery_id) -> Response:
+    try:
+        data = request.get_json()
+        solar_panel_id = data.get('solar_panel_id')
+
+        # Call the controller method to remove the battery from the solar panel
+        battery_controller.remove_solar_panel_from_battery(battery_id, solar_panel_id)
+
+        return make_response(jsonify({"message": "Panel removed successfully"}), HTTPStatus.OK)
+
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @battery_bp.patch('/<int:battery_id>')

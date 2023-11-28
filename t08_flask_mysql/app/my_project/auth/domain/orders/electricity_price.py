@@ -18,6 +18,8 @@ class ElectricityPrice(db.Model, IDto):
     time_date = db.Column(db.DateTime, nullable=False, unique=True)
     price = db.Column(db.String(45), nullable=False)
 
+    energy_sales = db.relationship("EnergySale", backref="electricity_price", lazy="dynamic")
+
     def __repr__(self) -> str:
         return f"ElectricityPrice(id={self.id}, time_date={self.time_date}, price='{self.price}')"
 
@@ -30,6 +32,7 @@ class ElectricityPrice(db.Model, IDto):
             "id": self.id,
             "time_date": str(self.time_date),
             "price": self.price,
+            "energy_sales": [energy.put_into_dto() for energy in self.energy_sales]
         }
 
     @staticmethod

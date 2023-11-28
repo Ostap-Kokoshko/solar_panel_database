@@ -18,7 +18,7 @@ def get_all_panels() -> Response:
 
 
 @solar_panel_bp.get('/<int:solar_panel_id>/solar_panel_batteries')
-def get_all_batteries_from_solar_systems(solar_panel_id) -> Response:
+def get_all_batteries_from_solar_panels(solar_panel_id) -> Response:
     """
     Gets all objects from table using Service layer.
     :return: Response object
@@ -34,6 +34,48 @@ def get_all_solar_panels_from_solar_systems(solar_panel_id) -> Response:
     """
     return make_response(jsonify(solar_panel_controller.solar_panel_find_solar_systems(solar_panel_id)), HTTPStatus.OK)
 
+
+@solar_panel_bp.get('/all/solar_panel_systems')
+def get_all_panels_and_systems() -> Response:
+    """
+    Gets all solar panels and solar systems using Service layer.
+    :return: Response object
+    """
+    solar_panels_and_systems = solar_panel_controller.find_all_panels_and_systems()
+
+    return make_response(jsonify(solar_panels_and_systems), HTTPStatus.OK)
+
+
+@solar_panel_bp.get('/all/solar_panel_batteries')
+def get_all_panels_with_batteries() -> Response:
+    """
+    Gets all solar panels with their associated batteries using Service layer.
+    :return: Response object
+    """
+    panels_with_batteries = solar_panel_controller.find_all_panels_with_batteries()
+
+    return make_response(jsonify(panels_with_batteries), HTTPStatus.OK)
+
+
+@solar_panel_bp.post('/<int:solar_panel_id>/add_battery')
+def add_battery_to_solar_panel(solar_panel_id) -> Response:
+    """
+    Adds a battery to a specific solar panel.
+    :param solar_panel_id: ID of the solar panel
+    :return: Response object
+    """
+    try:
+        # Get the battery_id from the request payload
+        data = request.get_json()
+        battery_id = data.get('battery_id')
+
+        # Call the controller method to add the battery to the solar panel
+        solar_panel_controller.add_battery_to_solar_panel(solar_panel_id, battery_id)
+
+        return make_response(jsonify({"message": "Battery added successfully"}), HTTPStatus.OK)
+
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @solar_panel_bp.post('')
@@ -67,6 +109,27 @@ def update_solar_panel(solar_panel_id: int) -> Response:
     solar_panel = SolarPanel.create_from_dto(content)
     solar_panel_controller.update(solar_panel_id, solar_panel)
     return make_response("SolarPanel updated", HTTPStatus.OK)
+
+
+@solar_panel_bp.patch('/<int:solar_panel_id>/remove_battery')
+def remove_battery_from_solar_panel(solar_panel_id) -> Response:
+    """
+    Removes a battery from a specific solar panel.
+    :param solar_panel_id: ID of the solar panel
+    :return: Response object
+    """
+    try:
+        # Get the battery_id from the request payload
+        data = request.get_json()
+        battery_id = data.get('battery_id')
+
+        # Call the controller method to remove the battery from the solar panel
+        solar_panel_controller.remove_battery_from_solar_panel(solar_panel_id, battery_id)
+
+        return make_response(jsonify({"message": "Battery removed successfully"}), HTTPStatus.OK)
+
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @solar_panel_bp.patch('/<int:solar_panel_id>')

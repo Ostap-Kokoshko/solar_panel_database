@@ -24,7 +24,6 @@ solar_system_has_solar_panel = db.Table(
 )
 
 
-
 class SolarPanel(db.Model, IDto):
     """
     Model declaration for SolarPanel.
@@ -39,7 +38,7 @@ class SolarPanel(db.Model, IDto):
     time = db.Column(db.Time, nullable=False)
     battery_charge = db.Column(db.Integer, nullable=True)
     energy_sale_id = db.Column(db.Integer, db.ForeignKey('energy_sale.id'), nullable=False)
-    energy_sale_electricity_price_id = db.Column(db.Integer, db.ForeignKey('energy_sale_electricity_price.id'),
+    energy_sale_electricity_price_id = db.Column(db.Integer, db.ForeignKey('electricity_price.id'),
                                                  nullable=False)
 
     # Relationship M:1 with EnergySale

@@ -15,6 +15,7 @@ class City(db.Model, IDto):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     region_name = db.Column(db.String(50), db.ForeignKey('region.name'), nullable=False)
+    regions = db.relationship("Region", back_populates="cities")
     clients = db.relationship("Client", backref="cities", lazy="dynamic")
 
     def __repr__(self) -> str:

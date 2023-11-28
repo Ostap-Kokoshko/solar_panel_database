@@ -24,13 +24,12 @@ class Owner(db.Model, IDto):
     email = db.Column(db.String(45), unique=True, nullable=False)
     phone_number = db.Column(db.String(13), unique=True, nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
-    city_region_name = db.Column(db.String(50), db.ForeignKey('city_region.name'), nullable=False)
+    city_region_name = db.Column(db.String(50), db.ForeignKey('region.name'), nullable=False)
 
     # Relationship M:1 with City
     city = db.relationship("City", backref="owners")
     solar_systems = db.relationship("SolarSystem", secondary="owner_solar_system",
                                     back_populates="owners")
-
 
     def __repr__(self) -> str:
         return f"Owner({self.id}, '{self.name}', '{self.email}', '{self.phone_number}', '{self.city.name}')"

@@ -15,7 +15,7 @@ class InstallationAddress(db.Model, IDto):
     street = db.Column(db.String(45), nullable=False)
     postal_index = db.Column(db.Integer, nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
-    city_region_name = db.Column(db.String(50), db.ForeignKey('city_region.name'), nullable=False)
+    city_region_name = db.Column(db.String(50), db.ForeignKey('region.name'), nullable=False)
 
     # Relationship M:1 with City
     city = db.relationship("City", backref="installation_addresses")

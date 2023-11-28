@@ -41,9 +41,9 @@ class SolarSystem(db.Model, IDto):
     battery_capacity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.DECIMAL, nullable=False)
     installation_address_id = db.Column(db.Integer, db.ForeignKey('installation_address.id'), nullable=False)
-    installation_address_city_id = db.Column(db.Integer, db.ForeignKey('installation_address_city.id'), nullable=False)
+    installation_address_city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     installation_address_city_region_name = db.Column(db.String(50),
-                                                      db.ForeignKey('installation_address_city_region.name'),
+                                                      db.ForeignKey('region.name'),
                                                       nullable=False)
 
     # Relationship M:1 with InstallationAddress

@@ -30,7 +30,7 @@ class Order(db.Model, IDto):
     street_address = db.Column(db.String(45), nullable=True)
     total_price = db.Column(db.DECIMAL, nullable=False)
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
-    city_region_name = db.Column(db.String(50), db.ForeignKey('city_region.name'), nullable=False)
+    city_region_name = db.Column(db.String(50), db.ForeignKey('region.name'), nullable=False)
 
     # Relationships
     client = db.relationship("Client", backref="orders_clients")
@@ -73,7 +73,7 @@ class Order(db.Model, IDto):
             is_delivery=dto_dict.get("is_delivery"),
             delivery_time=datetime.strptime(dto_dict.get("delivery_time"), "%Y-%m-%d %H:%M:%S") if dto_dict.get("delivery_time") else None,
             street_address=dto_dict.get("street_address"),
-            total_price=DECIMAL(dto_dict.get("total_price")),
+            total_price=dto_dict.get("total_price"),
             city_id=dto_dict.get("city_id"),
             city_region_name=dto_dict.get("city_region_name"),
         )

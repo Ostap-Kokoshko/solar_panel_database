@@ -24,7 +24,7 @@ class Client(db.Model, IDto):
     gander = db.Column(db.String(45), nullable=False)
     age = db.Column(db.Integer, nullable=True)
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
-    city_region_name = db.Column(db.String(50), db.ForeignKey('city_region.name'), nullable=False)
+    city_region_name = db.Column(db.String(50), db.ForeignKey('region.name'), nullable=False)
 
     # Relationship M:1 with City
     city = db.relationship("City", backref="clients_association")

@@ -20,7 +20,7 @@ class EnergySale(db.Model, IDto):
     electricity_price_id = db.Column(db.Integer, db.ForeignKey('electricity_price.id'), nullable=False)
 
     # Relationship M:1 with ElectricityPrice
-    electricity_price = db.relationship("ElectricityPrice", backref="energy_sales")
+    electricity_prices = db.relationship("ElectricityPrice", back_populates="energy_sales")
 
     __table_args__ = (
         UniqueConstraint('id', 'electricity_price_id'),
@@ -39,7 +39,6 @@ class EnergySale(db.Model, IDto):
         return {
             "id": self.id,
             "quantity": self.quantity,
-            "electricity_price_id": self.electricity_price_id,
         }
 
     @staticmethod

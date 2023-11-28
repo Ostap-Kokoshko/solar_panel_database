@@ -12,6 +12,7 @@ class Region(db.Model, IDto):
     __tablename__ = "region"
 
     name = db.Column(db.String(50), primary_key=True)
+    cities = db.relationship("City", backref="region", lazy="dynamic")
 
     def __repr__(self) -> str:
         return f"Region({self.name})"
@@ -23,6 +24,7 @@ class Region(db.Model, IDto):
         """
         return {
             "name": self.name,
+            "cities": [city.put_into_dto() for city in self.cities]
         }
 
     @staticmethod
