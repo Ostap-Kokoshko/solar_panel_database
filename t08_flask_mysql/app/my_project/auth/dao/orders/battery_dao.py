@@ -4,8 +4,6 @@ from my_project.auth.domain import Battery
 from my_project.auth.domain.orders.solar_panel import solar_panel_has_battery
 from my_project.auth.domain.orders.solar_panel import SolarPanel
 
-from sqlalchemy.orm import joinedload
-
 
 class BatteryDAO(GeneralDAO):
     """
@@ -67,15 +65,3 @@ class BatteryDAO(GeneralDAO):
         )
 
         session.commit()
-
-    def find_by_id_with_solar_panels(self, battery_id: int):
-        session = self.get_session()
-
-        battery = (
-            session.query(Battery)
-            .options(joinedload(Battery.solar_panels))
-            .filter(Battery.id == battery_id)
-            .first()
-        )
-
-        return battery

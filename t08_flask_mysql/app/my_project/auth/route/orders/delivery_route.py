@@ -29,6 +29,31 @@ def create_delivery() -> Response:
     return make_response(jsonify(delivery.put_into_dto()), HTTPStatus.CREATED)
 
 
+@delivery_bp.post('/add_delivery')
+def add_delivery() -> Response:
+    content = request.get_json()
+    name = content.get('name')
+    price = content.get('price')
+
+    if name is None or price is None:
+        return make_response(jsonify({"error": "Name and price are required"}), HTTPStatus.BAD_REQUEST)
+
+    try:
+        delivery_controller.add_delivery(name, price)
+        return make_response(jsonify({"message": "Delivery added successfully"}), HTTPStatus.CREATED)
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@delivery_bp.post('/insert_ten_deliveries')
+def insert_ten_deliveries() -> Response:
+    try:
+        delivery_controller.insert_ten_deliveries()
+        return make_response(jsonify({"message": "Ten deliveries added successfully"}), HTTPStatus.CREATED)
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 @delivery_bp.get('/<int:delivery_id>')
 def get_delivery(delivery_id: int) -> Response:
     """
@@ -36,6 +61,11 @@ def get_delivery(delivery_id: int) -> Response:
     :return: Response object
     """
     return make_response(jsonify(delivery_controller.find_by_id(delivery_id)), HTTPStatus.OK)
+
+
+@delivery_bp.get('/get_delivery_stats/<stat_type>')
+def get_delivery_stats(stat_type: str) -> Response:
+    return make_response(jsonify(delivery_controller.get_delivery_stats(stat_type)), HTTPStatus.OK)
 
 
 @delivery_bp.put('/<int:delivery_id>')

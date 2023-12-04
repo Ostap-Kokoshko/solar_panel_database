@@ -16,6 +16,3 @@ class BatteryService(GeneralService):
 
     def remove_solar_panel_from_battery(self, battery_id: int, solar_panel_id: int):
         self._dao.remove_solar_panel_from_battery(battery_id, solar_panel_id)
-
-    def find_by_id_with_solar_panels(self, battery_id: int):
-        return self._dao.find_by_id_with_solar_panels(battery_id)
