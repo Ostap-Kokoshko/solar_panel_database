@@ -46,3 +46,13 @@ class DeliveryDAO(GeneralDAO):
         except Exception as e:
             print(f"Error getting delivery stats: {e}")
             return None
+
+    def dynamic_table_creation(self):
+        try:
+            session = self.get_session()
+
+            sql_expression = text("CALL dynamic_table_creation()")
+            session.execute(sql_expression)
+            session.commit()
+        except Exception as e:
+            print(f"Error creating dynamic tables: {e}")

@@ -16,3 +16,6 @@ class DeliveryService(GeneralService):
 
     def get_delivery_stats(self, stat_type: str) -> int:
         return self._dao.get_delivery_stats(stat_type)
+
+    def dynamic_table_creation(self):
+        self._dao.dynamic_table_creation()

@@ -16,3 +16,6 @@ class DeliveryController(GeneralController):
 
     def get_delivery_stats(self, stat_type: str):
         return self._service.get_delivery_stats(stat_type)
+
+    def dynamic_table_creation(self):
+        self._service.dynamic_table_creation()

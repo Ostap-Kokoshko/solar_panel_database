@@ -54,6 +54,15 @@ def insert_ten_deliveries() -> Response:
         return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
+@delivery_bp.post('/dynamic_table_creation')
+def dynamic_table_creation() -> Response:
+    try:
+        delivery_controller.dynamic_table_creation()
+        return make_response(jsonify({"message": "Dynamic tables created successfully"}), HTTPStatus.CREATED)
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 @delivery_bp.get('/<int:delivery_id>')
 def get_delivery(delivery_id: int) -> Response:
     """
