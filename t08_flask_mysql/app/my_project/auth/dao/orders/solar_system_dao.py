@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from my_project.auth.dao.general_dao import GeneralDAO
 from my_project.auth.domain import SolarSystem
 
@@ -89,3 +91,27 @@ class SolarSystemDAO(GeneralDAO):
 
         return [owner.put_into_dto() for owner in owners]
 
+    def insert_into_owner_has_solar_system(self, solar_system_id: int, owner_name: str, owner_email: str,
+                                           owner_phone_number: str, owner_city_id: int, owner_region_name: str,
+                                           owner_count: int, solar_system_count: int):
+        try:
+            session = self.get_session()
+
+            sql_expression = text(
+                "CALL insert_into_owner_has_solar_system(:solar_system_id, :owner_name, :owner_email, "
+                ":owner_phone_number, :owner_city_id, :owner_region_name, :owner_count, :solar_system_count)")
+            session.execute(sql_expression,
+                            {
+                                'solar_system_id': solar_system_id,
+                                'owner_name': owner_name,
+                                'owner_email': owner_email,
+                                'owner_phone_number': owner_phone_number,
+                                'owner_city_id': owner_city_id,
+                                'owner_region_name': owner_region_name,
+                                'owner_count': owner_count,
+                                'solar_system_count': solar_system_count
+                            }
+                            )
+            session.commit()
+        except Exception as e:
+            print(f"Error inserting into owner_has_solar_system: {e}")

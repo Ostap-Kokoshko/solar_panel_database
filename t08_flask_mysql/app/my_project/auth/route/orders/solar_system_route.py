@@ -57,6 +57,33 @@ def create_solar_system() -> Response:
     return make_response(jsonify(solar_system.put_into_dto()), HTTPStatus.CREATED)
 
 
+@solar_system_bp.post('/add_owner_to_system')
+def create_owner_solar_system() -> Response:
+    content = request.get_json()
+
+    solar_system_id = content.get('solar_system_id')
+    owner_name = content.get('owner_name')
+    owner_email = content.get('owner_email')
+    owner_phone_number = content.get('owner_phone_number')
+    owner_city_id = content.get('owner_city_id')
+    owner_region_name = content.get('owner_region_name')
+    owner_count = content.get('owner_count')
+    solar_system_count = content.get('solar_system_count')
+
+    if any(arg is None for arg in [solar_system_id, owner_name, owner_email, owner_phone_number,
+                                   owner_city_id, owner_region_name, owner_count, solar_system_count]):
+        return make_response(jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST)
+
+    try:
+        solar_system_controller.insert_into_owner_has_solar_system(
+            solar_system_id, owner_name, owner_email, owner_phone_number,
+            owner_city_id, owner_region_name, owner_count, solar_system_count
+        )
+        return make_response(jsonify({"message": "Operation successful"}), HTTPStatus.CREATED)
+    except Exception as e:
+        return make_response(jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 @solar_system_bp.get('/<int:solar_system_id>')
 def get_solar_system(solar_system_id: int) -> Response:
     """

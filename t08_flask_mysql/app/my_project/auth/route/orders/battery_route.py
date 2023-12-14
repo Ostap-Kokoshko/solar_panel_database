@@ -48,7 +48,7 @@ def get_battery(battery_id: int) -> Response:
 
 
 @battery_bp.post('/<int:battery_id>/add_panel')
-def add_battery_to_solar_panel(battery_id) -> Response:
+def add_solar_panel_to_battery(battery_id) -> Response:
     try:
         data = request.get_json()
         solar_panel_id = data.get('solar_panel_id')
